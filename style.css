@@ -1,1 +1,144 @@
+:root {
+    --bg-color: #f4f4f9;
+    --text-color: #333;
+    --card-bg: #fff;
+    --kurulus: #27ae60;
+    --yukselme: #f1c40f;
+    --duraklama: #e67e22;
+    --gerileme: #e74c3c;
+    --dagilma: #9b59b6;
+}
 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: #ddd;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background: #2c3e50;
+    color: white;
+}
+
+/* Izgara (Grid) Yapısı - ElementGo Stili */
+#sultan-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Padişah Kartı Tasarımı */
+.sultan-card {
+    aspect-ratio: 1 / 1;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-bottom: 5px solid #ccc;
+    position: relative;
+}
+
+.sultan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+.sultan-card .symbol {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.sultan-card .number {
+    position: absolute;
+    top: 5px;
+    left: 8px;
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+.sultan-card .name {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Modal (Detay Penceresi) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 15px;
+    position: relative;
+    text-align: center;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.guc-bar {
+    background: #eee;
+    height: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+
+.guc-fill {
+    height: 100%;
+    background: #f1c40f;
+}
