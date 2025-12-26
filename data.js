@@ -61,7 +61,7 @@ const PADISAHLAR_DATA = [
         period: "Kuruluş",
         facts: [
             "Varna ve II. Kosova Savaşları ile Balkanlar'daki Türk hakimiyetini kesinleştirmiştir.",
-            "Tahtı kendi rızasıyla oğlu II. Mehmed'e (Fatih) devretmiştir (daha sonra tekrar dönmüştür).",
+            "Tahtı kendi rızasıyla oğlu II. Mehmed'e (Fatih) devretmiştir.",
             "İstanbul'u kuşatmış ancak alamamıştır."
         ]
     },
@@ -104,7 +104,7 @@ const PADISAHLAR_DATA = [
         reign: "1520 - 1566",
         period: "Yükselme",
         facts: [
-            "46 yıl ile Osmanlı tahtında en uzun süre kalan padişahdır.",
+            "46 yıl ile Osmanlı tahtında en uzun süre kalan padişahtır.",
             "Yaptırdığı kanunlarla 'Kanuni', batıda ise 'Muhteşem' olarak anılır.",
             "Mohaç Meydan Muharebesi ile Macaristan'ı fethetmiştir."
         ]

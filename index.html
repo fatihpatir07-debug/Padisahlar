@@ -29,9 +29,10 @@
 
     <header>
         <div class="header-content">
-            <img src="logo.png" alt="Logo" class="mini-logo">
-            <h1 class="brand">PADİŞAHLAR</h1>
-            <button id="pwa-install-btn" class="install-btn" style="display: none;">Uygulamayı Yükle</button>
+            <h1 class="brand" onclick="app.switchView('dashboard')">OSMANLI PADİŞAHLARI</h1>
+            <div class="header-actions">
+                <button id="pwa-install-btn" class="icon-btn" style="display: none;">📥</button>
+            </div>
         </div>
     </header>
 
@@ -40,44 +41,97 @@
         <section id="view-dashboard" class="view active">
             <div class="hero">
                 <h2>Cihan Padişahlarını Keşfedin</h2>
-                <p>36 Osmanlı Padişahı'nın hayatı, zaferleri ve mirası parmaklarınızın ucunda.</p>
+                <p>36 Osmanlı Padişahı'nın mirası.</p>
             </div>
 
             <div class="menu-grid">
                 <div class="menu-card" onclick="app.switchView('cards')">
                     <div class="icon">📜</div>
-                    <h3>Bilgi Kartları</h3>
-                    <p>Öğrenmeye hemen başlayın.</p>
+                    <h3>Öğrenme Kartları</h3>
                 </div>
                 <div class="menu-card" onclick="app.switchView('quiz')">
                     <div class="icon">🦅</div>
                     <h3>Bilgi Yarışması</h3>
-                    <p>Kendinizi test edin ve rütbe kazanın.</p>
                 </div>
                 <div class="menu-card" onclick="app.switchView('timeline')">
                     <div class="icon">⌛</div>
                     <h3>Zaman Çizelgesi</h3>
-                    <p>Padişahları kronolojik olarak görün.</p>
                 </div>
+                <div class="menu-card" onclick="app.switchView('install')">
+                    <div class="icon">📲</div>
+                    <h3>Yükleme Rehberi</h3>
+                </div>
+                <div class="menu-card" onclick="app.switchView('settings')">
+                    <div class="icon">⚙️</div>
+                    <h3>Ayarlar</h3>
+                </div>
+                <div class="menu-card" onclick="app.switchView('about')">
+                    <div class="icon">ℹ️</div>
+                    <h3>Hakkında</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation Guide View -->
+        <section id="view-install" class="view">
+            <div class="view-header">
+                <button class="back-btn" onclick="app.switchView('dashboard')">← Geri</button>
+                <h2>Yükleme Rehberi</h2>
+            </div>
+            <div class="install-content">
+                <div class="guide-box">
+                    <h3>🤖 Android (Chrome)</h3>
+                    <ol>
+                        <li>Tarayıcıda sağ üstteki <strong>üç noktaya (⋮)</strong> dokunun.</li>
+                        <li><strong>"Uygulamayı yükle"</strong> veya <strong>"Ana ekrana ekle"</strong> seçeneğine
+                            tıklayın.</li>
+                    </ol>
+                </div>
+                <div class="guide-box">
+                    <h3>🍎 iPhone / iPad (Safari)</h3>
+                    <ol>
+                        <li>Alt menüdeki <strong>"Paylaş" (↑)</strong> simgesine dokunun.</li>
+                        <li>Listeyi aşağı kaydırıp <strong>"Ana Ekrana Ekle"</strong> seçeneğini seçin.</li>
+                    </ol>
+                </div>
+                <div class="guide-box">
+                    <h3>💻 Masaüstü (Chrome/Edge)</h3>
+                    <ol>
+                        <li>Adres çubuğunun sağ tarafındaki <strong>yükle simgesine (⊕)</strong> tıklayın.</li>
+                        <li>Veya menüden <strong>"Uygulamayı Yükle"</strong> seçeneğini seçin.</li>
+                    </ol>
+                </div>
+                <p class="install-note">Böylece uygulamayı internet olmadan da her an kullanabilirsiniz!</p>
             </div>
         </section>
 
         <section id="view-cards" class="view">
             <div class="view-header">
                 <button class="back-btn" onclick="app.switchView('dashboard')">← Geri</button>
-                <h2>Bilgi Kartları</h2>
+                <h2>Öğrenme Kartları</h2>
+                <button class="speaker-btn" onclick="app.speakCurrentCard()">🔊</button>
             </div>
-            <div class="filters">
-                <select id="period-filter">
-                    <option value="all">Tüm Dönemler</option>
-                    <option value="Kuruluş">Kuruluş</option>
-                    <option value="Yükselme">Yükselme</option>
-                    <option value="Duraklama">Duraklama</option>
-                    <option value="Gerileme">Gerileme</option>
-                    <option value="Dağılma">Dağılma</option>
-                </select>
+
+            <div class="flashcard-container">
+                <div id="flashcard" class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-front">
+                        <h3 id="card-name-front">Padişah Adı</h3>
+                        <p id="card-period-front">Dönem</p>
+                        <span class="tap-hint">Detaylar için dokun</span>
+                    </div>
+                    <div class="flashcard-back">
+                        <h3 id="card-name-back">Padişah Adı</h3>
+                        <p id="card-reign-back">Saltanat Yılları</p>
+                        <ul id="card-facts-back" class="padişah-facts"></ul>
+                    </div>
+                </div>
             </div>
-            <div id="cards-container" class="cards-grid"></div>
+
+            <div class="flashcard-controls">
+                <button class="nav-btn" onclick="app.prevCard()">Önceki</button>
+                <span id="card-counter">1 / 36</span>
+                <button class="nav-btn" onclick="app.nextCard()">Sonraki</button>
+            </div>
         </section>
 
         <section id="view-quiz" class="view">
@@ -89,14 +143,14 @@
                 <div class="quiz-intro">
                     <div class="rank-icon">🛡️</div>
                     <h3>Hazır mısın?</h3>
-                    <p>Doğru cevaplar vererek Enderun talebesinden Sadrazamlığa kadar rütbe kazanın!</p>
+                    <p>Enderun talebesinden Sadrazamlığa kadar rütbe kazanın!</p>
                     <button class="primary-btn" onclick="app.startQuiz()">Yarışmaya Başla</button>
                 </div>
             </div>
             <div id="quiz-game" class="quiz-container" style="display: none;">
                 <div class="quiz-header">
                     <span id="quiz-score">Puan: 0</span>
-                    <span id="quiz-rank">Rütbe: Enderun Talebesi</span>
+                    <span id="quiz-rank">Rütbe: Talebe</span>
                 </div>
                 <div class="question-box">
                     <p id="question-text"></p>
@@ -108,6 +162,47 @@
                 <p id="final-score"></p>
                 <p id="final-rank"></p>
                 <button class="primary-btn" onclick="app.startQuiz()">Tekrar Dene</button>
+            </div>
+        </section>
+
+        <section id="view-settings" class="view">
+            <div class="view-header">
+                <button class="back-btn" onclick="app.switchView('dashboard')">← Geri</button>
+                <h2>Ayarlar</h2>
+            </div>
+            <div class="settings-list">
+                <div class="setting-item">
+                    <span>Tema Değiştir</span>
+                    <select id="theme-select" onchange="app.changeTheme(this.value)">
+                        <option value="ottoman">Klasik Osmanlı</option>
+                        <option value="dark">Karanlık Mod</option>
+                        <option value="light">Aydınlık Mod</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <span>Seslendirme Hızı</span>
+                    <input type="range" min="0.5" max="2" step="0.1" value="1" id="speech-rate">
+                </div>
+            </div>
+        </section>
+
+        <section id="view-about" class="view">
+            <div class="view-header">
+                <button class="back-btn" onclick="app.switchView('dashboard')">← Geri</button>
+                <h2>Hakkında</h2>
+            </div>
+            <div class="about-content">
+                <p><strong>Osmanlı Padişahları</strong> uygulaması, lise öğrencileri için özel olarak hazırlanmış
+                    interaktif bir eğitim materyalidir.</p>
+                <p>Tarihimizin 600 yılına damga vuran 36 padişahın hayatını ve başarılarını en etkileyici şekilde
+                    öğrenmeniz için geliştirilmiştir.</p>
+                <div class="dev-info">
+                    <p><strong>Tasarım ve Programlama:</strong></p>
+                    <p>Bilişim Teknolojileri Öğretmeni</p>
+                    <p><a href="https://fatihpatir.github.io/web/" target="_blank" class="dev-link">Fatih PATIR</a></p>
+                    <p>Korkuteli Nene Hatun MTAL</p>
+                    <p>Korkuteli / ANTALYA</p>
+                </div>
             </div>
         </section>
 

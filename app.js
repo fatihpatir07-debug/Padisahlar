@@ -1,5 +1,6 @@
 const app = {
     currentView: 'dashboard',
+    currentCardIndex: 0,
     quiz: {
         currentQuestion: 0,
         score: 0,
@@ -15,28 +16,23 @@ const app = {
     },
 
     init() {
-        // Hide loader after assets are ready (simulated for now)
+        // Hide loader
         setTimeout(() => {
-            const loader = document.getElementById('loader');
-            const progress = loader.querySelector('.progress-bar');
-            progress.style.width = '100%';
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }, 500);
-        }, 1500);
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+        }, 1000);
 
-        this.renderCards();
+        // Load saved theme
+        const savedTheme = localStorage.getItem('preferred-theme');
+        if (savedTheme) this.changeTheme(savedTheme);
+
+        this.updateCard();
         this.renderTimeline();
         this.setupEventListeners();
         this.setupPWA();
     },
 
     setupEventListeners() {
-        document.getElementById('period-filter').addEventListener('change', (e) => {
-            this.renderCards(e.target.value);
-        });
-
         // Close modal
         document.querySelector('.close-modal').onclick = () => {
             document.getElementById('install-modal').style.display = "none";
@@ -47,32 +43,41 @@ const app = {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`view-${viewId}`).classList.add('active');
         this.currentView = viewId;
+
+        if (viewId === 'cards') {
+            this.updateCard();
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
         window.scrollTo(0, 0);
     },
 
-    renderCards(filter = 'all') {
-        const container = document.getElementById('cards-container');
-        container.innerHTML = '';
+    updateCard() {
+        const padişah = PADISAHLAR_DATA[this.currentCardIndex];
 
-        const filtered = filter === 'all'
-            ? PADISAHLAR_DATA
-            : PADISAHLAR_DATA.filter(s => s.period === filter);
+        // Front
+        document.getElementById('card-name-front').textContent = padişah.name;
+        document.getElementById('card-period-front').textContent = padişah.period;
 
-        filtered.forEach(padişah => {
-            const card = document.createElement('div');
-            card.className = 'padişah-card';
-            card.innerHTML = `
-                <h3>${padişah.id}. ${padişah.name}</h3>
-                <div class="padişah-meta">
-                    <span>${padişah.period}</span>
-                    <span>${padişah.reign}</span>
-                </div>
-                <ul class="padişah-facts">
-                    ${padişah.facts.map(f => `<li>${f}</li>`).join('')}
-                </ul>
-            `;
-            container.appendChild(card);
-        });
+        // Back
+        document.getElementById('card-name-back').textContent = padişah.name;
+        document.getElementById('card-reign-back').textContent = padişah.reign;
+
+        const factsList = document.getElementById('card-facts-back');
+        factsList.innerHTML = padişah.facts.map(f => `<li>${f}</li>`).join('');
+
+        document.getElementById('card-counter').textContent = `${this.currentCardIndex + 1} / ${PADISAHLAR_DATA.length}`;
+    },
+
+    nextCard() {
+        this.currentCardIndex = (this.currentCardIndex + 1) % PADISAHLAR_DATA.length;
+        document.getElementById('flashcard').classList.remove('flipped');
+        setTimeout(() => this.updateCard(), 150);
+    },
+
+    prevCard() {
+        this.currentCardIndex = (this.currentCardIndex - 1 + PADISAHLAR_DATA.length) % PADISAHLAR_DATA.length;
+        document.getElementById('flashcard').classList.remove('flipped');
+        setTimeout(() => this.updateCard(), 150);
     },
 
     renderTimeline() {
@@ -107,7 +112,7 @@ const app = {
 
     generateQuestions() {
         // Create 20 random questions from the data
-        return [...SULTANS_DATA].sort(() => 0.5 - Math.random()).slice(0, 20);
+        return [...PADISAHLAR_DATA].sort(() => 0.5 - Math.random()).slice(0, 20);
     },
 
     showNextQuestion() {
@@ -116,8 +121,8 @@ const app = {
             return;
         }
 
-        const sultan = this.quiz.questions[this.quiz.currentQuestion];
-        const fact = sultan.facts[Math.floor(Math.random() * sultan.facts.length)];
+        const padişah = this.quiz.questions[this.quiz.currentQuestion];
+        const fact = padişah.facts[Math.floor(Math.random() * padişah.facts.length)];
 
         document.getElementById('question-text').textContent = `"${fact}" - Bu hangi padişahın özelliğidir?`;
         document.getElementById('quiz-score').textContent = `Puan: ${this.quiz.score}`;
@@ -126,15 +131,15 @@ const app = {
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
 
-        const options = this.getWrongOptions(sultan.name);
-        options.push(sultan.name);
+        const options = this.getWrongOptions(padişah.name);
+        options.push(padişah.name);
         options.sort(() => 0.5 - Math.random());
 
         options.forEach(opt => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
             btn.textContent = opt;
-            btn.onclick = () => this.handleAnswer(opt === sultan.name);
+            btn.onclick = () => this.handleAnswer(opt === padişah.name);
             optionsContainer.appendChild(btn);
         });
     },
@@ -148,11 +153,31 @@ const app = {
     },
 
     getWrongOptions(correctName) {
-        return [...SULTANS_DATA]
-            .filter(s => s.name !== correctName)
+        return [...PADISAHLAR_DATA]
+            .filter(p => p.name !== correctName)
             .sort(() => 0.5 - Math.random())
             .slice(0, 3)
-            .map(s => s.name);
+            .map(p => p.name);
+    },
+
+    // Voice Support
+    speakCurrentCard() {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel(); // Stop current speech
+            const padişah = PADISAHLAR_DATA[this.currentCardIndex];
+            const textToSpeak = `${padişah.name}. ${padişah.reign} yılları arasında hüküm sürmüştür. ${padişah.facts.join(' ')}`;
+
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
+            utterance.lang = 'tr-TR';
+            utterance.rate = document.getElementById('speech-rate')?.value || 1;
+            window.speechSynthesis.speak(utterance);
+        }
+    },
+
+    // Theme Support
+    changeTheme(theme) {
+        document.body.className = `theme-${theme}`;
+        localStorage.setItem('preferred-theme', theme);
     },
 
     getRank(score) {
