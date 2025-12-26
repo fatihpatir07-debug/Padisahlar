@@ -73,3 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
     closeBtn.onclick = () => modal.style.display = 'none';
     window.onclick = (event) => { if (event.target == modal) modal.style.display = 'none'; };
 });
+// PWA Service Worker Kaydı
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js')
+    .then(() => console.log("PWA Hazır!"))
+    .catch(err => console.log("PWA Hatası:", err));
+}
