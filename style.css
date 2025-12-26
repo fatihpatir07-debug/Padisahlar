@@ -1,113 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
 :root {
-    --bg-color: #0a0a0c; /* ElementGo gibi koyu arka plan */
-    --card-bg: #1a1a1d;
-    --text-color: #ffffff;
-    --kurulus: #2ecc71;
-    --yukselme: #f1c40f;
-    --duraklama: #e67e22;
-    --gerileme: #e74c3c;
-    --dagilma: #9b59b6;
+    --bg-color: #050505;
+    --card-bg: rgba(255, 255, 255, 0.03);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-main: #ffffff;
+    --text-dim: #888;
+    
+    /* Dönem Renkleri (Neon Versiyonlar) */
+    --kurulus: #00ff88;
+    --yukselme: #ffcc00;
+    --duraklama: #ff8800;
+    --gerileme: #ff4444;
+    --dagilma: #cc00ff;
 }
 
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    background-image: radial-gradient(circle at center, #111 0%, #050505 100%);
+    color: var(--text-main);
     margin: 0;
+    min-height: 100vh;
     padding: 20px;
 }
 
-header h1 {
-    font-size: 2.5rem;
-    letter-spacing: -1px;
-    margin-bottom: 5px;
+header {
+    text-align: center;
+    padding: 40px 0;
 }
 
-/* Filtre Butonları - ElementGo gibi daha şık */
+header h1 {
+    font-weight: 900;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0;
+    background: linear-gradient(to bottom, #fff, #666);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Filtre Butonları */
 .filter-bar {
-    margin: 20px 0;
+    margin-top: 20px;
     display: flex;
-    gap: 8px;
     justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .filter-btn {
-    background: #222;
-    border: 1px solid #444;
-    color: #ccc;
-    padding: 6px 12px;
-    border-radius: 4px;
-    font-size: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    font-weight: 700;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-.filter-btn.active {
+.filter-btn:hover, .filter-btn.active {
     border-color: #fff;
     color: #fff;
+    background: rgba(255,255,255,0.05);
 }
 
-/* PERİYODİK TABLO DİZİLİMİ */
+/* PERİYODİK IZGARA */
 #sultan-grid {
     display: grid;
-    /* ElementGo'daki gibi yan yana çoklu dizilim */
-    grid-template-columns: repeat(9, 1fr); 
-    gap: 8px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    max-width: 1200px;
+    margin: 40px auto;
 }
 
-/* Telefonlarda dizilimi otomatik ayarla */
-@media (max-width: 900px) {
-    #sultan-grid { grid-template-columns: repeat(6, 1fr); }
-}
-@media (max-width: 600px) {
-    #sultan-grid { grid-template-columns: repeat(4, 1fr); }
-}
-
-/* ElementGo Kart Tasarımı */
+/* KART TASARIMI (ElementGo Birebir) */
 .sultan-card {
     background: var(--card-bg);
-    aspect-ratio: 1 / 1.1; /* ElementGo kartları gibi hafif dikey */
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
+    aspect-ratio: 1 / 1.15;
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    padding: 5px;
+    justify-content: space-between;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
     position: relative;
-    transition: all 0.2s;
-}
-
-.sultan-card:hover {
-    transform: scale(1.05);
-    z-index: 10;
-    border-color: #fff;
-    box-shadow: 0 0 15px rgba(255,255,255,0.2);
-}
-
-.sultan-card .number {
-    font-size: 0.65rem;
-    font-weight: bold;
-}
-
-.sultan-card .symbol {
-    font-size: 1.6rem;
-    font-weight: 800;
-    text-align: center;
-    margin: 5px 0;
-}
-
-.sultan-card .name {
-    font-size: 0.6rem;
-    text-transform: uppercase;
-    text-align: center;
     overflow: hidden;
-    white-space: nowrap;
 }
 
-/* Modal ElementGo stili */
+/* Üstteki Numara */
+.sultan-card .number {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-dim);
+}
+
+/* Ortadaki Sembol */
+.sultan-card .symbol {
+    font-size: 1.8rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+/* Alttaki İsim */
+.sultan-card .name {
+    font-size: 0.65rem;
+    text-align: center;
+    font-weight: 400;
+    color: var(--text-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Kartın altındaki renkli ince çizgi */
+.sultan-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--line-color);
+}
+
+/* Hover Efekti */
+.sultan-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.4);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* MODAL (Cam Efekti) */
 .modal-content {
-    background: #111;
-    border: 1px solid #444;
-    color: #fff;
-    border-radius: 0; /* ElementGo daha keskin köşelidir */
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 0;
+    color: white;
+    padding: 40px;
+}
+
+.guc-bar {
+    background: rgba(255,255,255,0.1);
+    height: 4px;
+    border-radius: 2px;
 }
