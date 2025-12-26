@@ -1,11 +1,39 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>Padişahlar</title>
+  <meta charset="UTF-8" />
+  <title>PADİŞAHLAR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#7a1f2b">
+
+  <!-- Stil -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Padişahlar Projesi</h1>
-  <p>GitHub Pages çalışıyor 🎉</p>
+
+  <header>
+    <h1>PADİŞAHLAR</h1>
+    <p>Osmanlı Padişahlarını öğren, dinle, oyna</p>
+  </header>
+
+  <!-- ANA MENÜ -->
+  <nav id="menu">
+    <button onclick="showPadisahlar()">📜 Padişahlar</button>
+    <button onclick="showOyun()">🎮 Oyun</button>
+    <button onclick="showYarisma()">🏁 Yarışma</button>
+  </nav>
+
+  <!-- İÇERİK ALANI -->
+  <main id="content"></main>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
 </body>
 </html>
