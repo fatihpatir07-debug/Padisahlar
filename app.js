@@ -52,32 +52,48 @@ const app = {
     },
 
     updateCard() {
-        const padişah = PADISAHLAR_DATA[this.currentCardIndex];
+        if (typeof PADISAHLAR_DATA === 'undefined') {
+            console.error('PADISAHLAR_DATA is not loaded!');
+            return;
+        }
 
-        // Front
-        document.getElementById('card-name-front').textContent = padişah.name;
-        document.getElementById('card-period-front').textContent = padişah.period;
+        const sultan = PADISAHLAR_DATA[this.currentCardIndex];
+        if (!sultan) return;
 
-        // Back
-        document.getElementById('card-name-back').textContent = padişah.name;
-        document.getElementById('card-reign-back').textContent = padişah.reign;
+        // Front: Name + Basic Info
+        document.getElementById('card-name-front').textContent = sultan.name;
+        document.getElementById('card-period-front').innerHTML = `
+            <div class="period-badge">${sultan.period} Dönemi</div>
+            <div class="reign-years">Saltanat: ${sultan.reign}</div>
+        `;
+
+        // Back: Details/Facts
+        document.getElementById('card-name-back').textContent = sultan.name;
+        document.getElementById('card-reign-back').textContent = "Öne Çıkan Bilgiler";
 
         const factsList = document.getElementById('card-facts-back');
-        factsList.innerHTML = padişah.facts.map(f => `<li>${f}</li>`).join('');
+        factsList.innerHTML = sultan.facts.map(f => `<li>${f}</li>`).join('');
 
         document.getElementById('card-counter').textContent = `${this.currentCardIndex + 1} / ${PADISAHLAR_DATA.length}`;
     },
 
     nextCard() {
+        if (!PADISAHLAR_DATA) return;
         this.currentCardIndex = (this.currentCardIndex + 1) % PADISAHLAR_DATA.length;
-        document.getElementById('flashcard').classList.remove('flipped');
-        setTimeout(() => this.updateCard(), 150);
+        const card = document.getElementById('flashcard');
+        card.classList.remove('flipped');
+
+        // Short delay to allow flip back animation before content swap
+        setTimeout(() => this.updateCard(), 200);
     },
 
     prevCard() {
+        if (!PADISAHLAR_DATA) return;
         this.currentCardIndex = (this.currentCardIndex - 1 + PADISAHLAR_DATA.length) % PADISAHLAR_DATA.length;
-        document.getElementById('flashcard').classList.remove('flipped');
-        setTimeout(() => this.updateCard(), 150);
+        const card = document.getElementById('flashcard');
+        card.classList.remove('flipped');
+
+        setTimeout(() => this.updateCard(), 200);
     },
 
     renderTimeline() {
