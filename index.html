@@ -1,39 +1,40 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <title>PADİŞAHLAR</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#7a1f2b">
-
-  <!-- Stil -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Osmanlı Padişahları | İnteraktif Zaman Çizelgesi</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
 </head>
 <body>
 
-  <header>
-    <h1>PADİŞAHLAR</h1>
-    <p>Osmanlı Padişahlarını öğren, dinle, oyna</p>
-  </header>
+    <header>
+        <h1>Osmanlı Padişahları</h1>
+        <p>İnteraktif Periyodik Tablo ve Zaman Çizelgesi</p>
+        
+        <div class="filter-bar">
+            <button class="filter-btn active" data-period="all">Hepsi</button>
+            <button class="filter-btn" data-period="kurulus">Kuruluş</button>
+            <button class="filter-btn" data-period="yukselme">Yükselme</button>
+            <button class="filter-btn" data-period="duraklama">Duraklama</button>
+            <button class="filter-btn" data-period="gerileme">Gerileme</button>
+            <button class="filter-btn" data-period="dagilma">Dağılma</button>
+        </div>
+    </header>
 
-  <!-- ANA MENÜ -->
-  <nav id="menu">
-    <button onclick="showPadisahlar()">📜 Padişahlar</button>
-    <button onclick="showOyun()">🎮 Oyun</button>
-    <button onclick="showYarisma()">🏁 Yarışma</button>
-  </nav>
+    <main id="sultan-grid">
+        </main>
 
-  <!-- İÇERİK ALANI -->
-  <main id="content"></main>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
 
-  <script src="app.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js');
-    }
-  </script>
+    <script src="app.js"></script>
 </body>
 </html>
